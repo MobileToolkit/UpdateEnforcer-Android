@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">Update Enforcer</string>
+
+    <string name="unsupported_version_title">Unsupported version</string>
+    <string name="unsupported_version_message">This app version is not supported anymore</string>
+
+    <string name="outdated_version_title">Outdated version</string>
+    <string name="outdated_version_message">This app version is outdated, please update</string>
+
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+
+</resources>
