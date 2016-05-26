@@ -11,9 +11,7 @@ import org.mobiletoolkit.updateenforcer.model.VersionInfo;
  * Created by Sebastian Owodzin on 15/05/2016.
  * Copyright © 2016 mobiletoolkit.org. All rights reserved.
  */
-public class VersionChecker {
-
-    private Activity activity;
+public class VersionCheck {
 
     private DefaultArtifactVersion appVersion;
 
@@ -23,8 +21,7 @@ public class VersionChecker {
         UNSUPPORTED, OUTDATED, UP_TO_DATE
     }
 
-    public VersionChecker(@NonNull Activity activity, @NonNull String appVersionName, @NonNull VersionInfo versionInfo) {
-        this.activity = activity;
+    public VersionCheck(@NonNull String appVersionName, @NonNull VersionInfo versionInfo) {
         this.appVersion = new DefaultArtifactVersion(appVersionName);
         this.versionInfo = versionInfo;
     }
@@ -33,13 +30,12 @@ public class VersionChecker {
         Result result = Result.UP_TO_DATE;
 
         DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName());
-
         if (0 != appVersion.compareTo(latestVersion)) {
             result = Result.OUTDATED;
         }
 
         for (Version version : versionInfo.getUnsupportedVersions()) {
-            if (0 != appVersion.compareTo(new DefaultArtifactVersion(version.getVersionName()))) {
+            if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
                 result = Result.UNSUPPORTED;
                 break;
             }

@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UpdateEnforcer.iml" filepath="$PROJECT_DIR$/UpdateEnforcer.iml" />
       <module fileurl="file://$PROJECT_DIR$/exampleapp/exampleapp.iml" filepath="$PROJECT_DIR$/exampleapp/exampleapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/update-enforcer.iml" filepath="$PROJECT_DIR$/update-enforcer.iml" />
     </modules>
   </component>
 </project>
