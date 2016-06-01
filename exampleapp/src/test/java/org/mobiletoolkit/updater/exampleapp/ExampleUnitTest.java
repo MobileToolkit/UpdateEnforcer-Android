@@ -1,4 +1,4 @@
-package org.mobiletoolkit.updateenforcer;
+package org.mobiletoolkit.updater.exampleapp;
 
 import org.junit.Test;
 

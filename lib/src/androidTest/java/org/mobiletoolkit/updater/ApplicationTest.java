@@ -1,4 +1,4 @@
-package org.mobiletoolkit.updateenforcer.exampleapp;
+package org.mobiletoolkit.updater;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

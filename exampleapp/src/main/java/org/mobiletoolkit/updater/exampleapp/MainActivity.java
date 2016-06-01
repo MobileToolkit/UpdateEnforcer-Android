@@ -1,12 +1,12 @@
-package org.mobiletoolkit.updateenforcer.exampleapp;
+package org.mobiletoolkit.updater.exampleapp;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import org.mobiletoolkit.updateenforcer.Updater;
-import org.mobiletoolkit.updateenforcer.VersionCheck;
-import org.mobiletoolkit.updateenforcer.model.VersionInfo;
+import org.mobiletoolkit.updater.Updater;
+import org.mobiletoolkit.updater.VersionCheck;
+import org.mobiletoolkit.updater.model.VersionInfo;
 
 import retrofit2.Call;
 import retrofit2.Callback;

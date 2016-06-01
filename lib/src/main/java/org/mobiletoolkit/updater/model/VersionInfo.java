@@ -1,4 +1,4 @@
-package org.mobiletoolkit.updateenforcer.model;
+package org.mobiletoolkit.updater.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

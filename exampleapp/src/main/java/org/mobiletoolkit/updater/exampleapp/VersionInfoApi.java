@@ -1,6 +1,6 @@
-package org.mobiletoolkit.updateenforcer.exampleapp;
+package org.mobiletoolkit.updater.exampleapp;
 
-import org.mobiletoolkit.updateenforcer.model.VersionInfo;
+import org.mobiletoolkit.updater.model.VersionInfo;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

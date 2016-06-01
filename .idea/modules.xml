@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/exampleapp/exampleapp.iml" filepath="$PROJECT_DIR$/exampleapp/exampleapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/update-enforcer.iml" filepath="$PROJECT_DIR$/update-enforcer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/updater.iml" filepath="$PROJECT_DIR$/updater.iml" />
     </modules>
   </component>
 </project>
