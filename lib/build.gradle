@@ -50,7 +50,6 @@ install {
     repositories.mavenInstaller {
         pom.project {
             name 'updater'
-//            description 'A wrapper library for basic functions of Google Play Services APIs'
             url 'https://github.com/MobileToolkit/updater-android'
             inceptionYear '2016'
 
@@ -58,45 +57,15 @@ install {
             groupId 'org.mobiletoolkit'
             artifactId 'updater'
             version '1.0'
-
-//            licenses {
-//                license {
-//                    name 'MIT'
-//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    distribution 'repo'
-//                }
-//            }
-//            scm {
-//                connection 'https://github.com/googlesamples/easygoogle.git'
-//                url 'https://github.com/googlesamples/easygoogle'
-//
-//            }
-//            developers {
-//                developer {
-//                    name 'Google'
-//                }
-//            }
         }
     }
 }
 
-
-
-//publishing {
-//    publications {
-//        UpdaterLibPublication(MavenPublication) {
-//            from components.java
-//            groupId 'org.mobiletoolkit'
-//            artifactId 'updater'
-//            version '1.0'
-//        }
-//    }
-//}
-
 bintray {
     user = BINTRAY_USER
     key = BINTRAY_API_KEY
-    publications = ['UpdaterLibPublication']
+    configurations = ['archives']
+    publish = true
     pkg {
         repo = 'public'
         name = 'updater'
