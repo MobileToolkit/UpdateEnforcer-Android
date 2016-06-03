@@ -1,19 +1,19 @@
 {
   "latest_version": {
-    "application_id": "org.mobiletoolkit.exampleapp",
+    "application_id": "org.mobiletoolkit.updater.exampleapp",
     "version_name": "2.0.0"
   },
   "unsupported_versions": [
     {
-      "application_id": "org.mobiletoolkit.exampleapp",
+      "application_id": "org.mobiletoolkit.updater.exampleapp",
       "version_name": "1.5"
     },
     {
-      "application_id": "org.mobiletoolkit.example.app",
+      "application_id": "org.mobiletoolkit.updater.exampleapp.old",
       "version_name": "0.5"
     },
     {
-      "application_id": "org.mobiletoolkit.example.app",
+      "application_id": "org.mobiletoolkit.updater.exampleapp.old",
       "version_name": "0.3"
     }
   ],

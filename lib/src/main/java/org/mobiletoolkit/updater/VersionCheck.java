@@ -17,6 +17,8 @@ public class VersionCheck {
 
     private VersionInfo versionInfo;
 
+    private Result result = null;
+
     public enum Result {
         UNSUPPORTED, OUTDATED, UP_TO_DATE
     }
@@ -28,22 +30,24 @@ public class VersionCheck {
     }
 
     public Result getResult() {
-        Result result = Result.UP_TO_DATE;
+        if (null == result) {
+            result = Result.UP_TO_DATE;
 
-        if (appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
-            DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName());
-            if (0 != appVersion.compareTo(latestVersion)) {
-                result = Result.OUTDATED;
+            if (appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
+                DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName());
+                if (0 != appVersion.compareTo(latestVersion)) {
+                    result = Result.OUTDATED;
+                }
+            } else {
+                result = Result.UNSUPPORTED;
             }
-        } else {
-            result = Result.UNSUPPORTED;
-        }
 
-        if (!result.equals(Result.UNSUPPORTED)) {
-            for (Version version : versionInfo.getUnsupportedVersions()) {
-                if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
-                    result = Result.UNSUPPORTED;
-                    break;
+            if (!result.equals(Result.UNSUPPORTED)) {
+                for (Version version : versionInfo.getUnsupportedVersions()) {
+                    if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
+                        result = Result.UNSUPPORTED;
+                        break;
+                    }
                 }
             }
         }

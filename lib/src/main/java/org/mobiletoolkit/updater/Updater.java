@@ -22,7 +22,7 @@ public class Updater {
 
     private static String LOG_TAG = Updater.class.getSimpleName();
 
-    private static Integer UNINSTALL_REQUEST_CODE = 999;
+    private static Integer UNSUPPORTED_VERSION_UNINSTALL_REQUEST_CODE = 999;
 
     private Activity activity;
     private String appApplicationId;
@@ -40,31 +40,24 @@ public class Updater {
         this.appVersionName = appVersionName;
     }
 
-    public void setVersionInfo(@NonNull VersionInfo versionInfo) {
-        this.versionInfo = versionInfo;
-    }
-
     public void setListener(@NonNull Listener listener) {
         this.listener = listener;
     }
 
     @NonNull
-    public VersionCheck.Result run() {
+    public VersionCheck.Result run(@NonNull final VersionInfo versionInfo) {
+        this.versionInfo = versionInfo;
+
         versionCheck = new VersionCheck(appVersionName, appApplicationId, versionInfo);
 
-        VersionCheck.Result result = versionCheck.getResult();
-
-        // check if the latest version is already installed & propose to start it
-        if (isApplicationInstalled(versionInfo.getLatestVersion().getApplicationId()) && !VersionCheck.Result.UP_TO_DATE.equals(result)) {
+        // check if the latest app version is already installed & propose to start it instead
+        if (isApplicationInstalled(versionInfo.getLatestVersion().getApplicationId()) && !appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                    .setTitle(R.string.latest_version_exists_title)
-                    .setMessage(R.string.latest_version_exists_message)
+                    .setTitle(R.string.latest_version_installed_title)
+                    .setMessage(R.string.latest_version_installed_message)
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
-                            if (null != listener) {
-                                listener.latestVersionLaunchStarted();
-                            }
 
                             launchApplication(versionInfo.getLatestVersion().getApplicationId());
                         }
@@ -72,6 +65,7 @@ public class Updater {
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
+
                             if (null != listener) {
                                 listener.latestVersionLaunchCancelled();
                             }
@@ -79,40 +73,36 @@ public class Updater {
                     });
 
             builder.create().show();
-
-            return result;
+        } else {
+            switch (versionCheck.getResult()) {
+                case UP_TO_DATE:
+                    uninstallUnsupportedVersionsIfNeeded();
+                    break;
+                case OUTDATED:
+                    showOutdatedVersionAlert();
+                    break;
+                case UNSUPPORTED:
+                    showUnsupportedVersionAlert();
+                    break;
+            }
         }
 
-        switch (result) {
-            case UP_TO_DATE:
-                if (versionInfo.getUninstallUnsupportedVersions()) {
-                    uninstallUnsupportedVersions();
-                }
-                break;
-            case OUTDATED:
-                showOutdatedVersionAlert();
-                break;
-            case UNSUPPORTED:
-                showUnsupportedVersionAlert();
-                break;
-        }
-
-        return result;
+        return versionCheck.getResult();
     }
 
     @NonNull
     public Boolean handleOnActivityResult(@NonNull Integer requestCode, @NonNull Integer resultCode, @NonNull Intent data) {
-        if (requestCode.equals(UNINSTALL_REQUEST_CODE)) {
+        if (requestCode.equals(UNSUPPORTED_VERSION_UNINSTALL_REQUEST_CODE)) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    Log.d(LOG_TAG, "onActivityResult: user accepted the (un)install");
-                    uninstallUnsupportedVersions();
+                    Log.d(LOG_TAG, "handleOnActivityResult: user accepted the (un)install");
+                    performNextUnsupportedVersionUninstall();
                     break;
                 case Activity.RESULT_CANCELED:
-                    Log.d(LOG_TAG, "onActivityResult: user canceled the (un)install");
+                    Log.d(LOG_TAG, "handleOnActivityResult: user canceled the (un)install");
                     break;
                 case Activity.RESULT_FIRST_USER:
-                    Log.d(LOG_TAG, "onActivityResult: failed to (un)install");
+                    Log.d(LOG_TAG, "handleOnActivityResult: failed to (un)install");
                     break;
             }
 
@@ -194,30 +184,42 @@ public class Updater {
         activity.startActivity(intent);
     }
 
-    private void uninstallUnsupportedVersions() {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences("com.mobiletoolkit.updater", Context.MODE_PRIVATE);
+    private void uninstallUnsupportedVersionsIfNeeded() {
+        if (versionInfo.getUninstallUnsupportedVersions()) {
+            SharedPreferences sharedPreferences = activity.getSharedPreferences("com.mobiletoolkit.updater", Context.MODE_PRIVATE);
 
-        if (!sharedPreferences.getBoolean("unsupported_versions_uninstall_done", false)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                    .setTitle(R.string.unsupported_version_installed_title)
-                    .setMessage(R.string.unsupported_version_installed_message)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
+            Boolean unsupportedVersionsUninstallDone = sharedPreferences.getBoolean("unsupported_versions_uninstall_done", false);
 
-                            performNextUnsupportedVersionUninstall();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
+            Boolean unsupportedVersionsInstalled = false;
+            for (Version version : versionInfo.getUnsupportedVersions()) {
+                if (!appApplicationId.equals(version.getApplicationId()) && isApplicationInstalled(version.getApplicationId())) {
+                    unsupportedVersionsInstalled = true;
+                    break;
+                }
+            }
 
-            builder.create().show();
+            if (unsupportedVersionsInstalled && !unsupportedVersionsUninstallDone) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                        .setTitle(R.string.unsupported_version_installed_title)
+                        .setMessage(R.string.unsupported_version_installed_message)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+
+                                performNextUnsupportedVersionUninstall();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.create().show();
+            }
+
+            sharedPreferences.edit().putBoolean("unsupported_versions_uninstall_done", true).apply();
         }
-
-        sharedPreferences.edit().putBoolean("unsupported_versions_uninstall_done", true).apply();
     }
 
     private void performNextUnsupportedVersionUninstall() {
@@ -249,11 +251,10 @@ public class Updater {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + applicationId));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-        activity.startActivityForResult(intent, UNINSTALL_REQUEST_CODE);
+        activity.startActivityForResult(intent, UNSUPPORTED_VERSION_UNINSTALL_REQUEST_CODE);
     }
 
     public interface Listener {
-        void latestVersionLaunchStarted();
         void latestVersionLaunchCancelled();
 
         void outdatedVersionUpdateStarted();

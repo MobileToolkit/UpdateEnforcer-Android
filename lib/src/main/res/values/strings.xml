@@ -8,8 +8,8 @@
     <string name="outdated_version_title">Outdated version</string>
     <string name="outdated_version_message">This app version is outdated, please update</string>
 
-    <string name="latest_version_exists_title">Newer version exists</string>
-    <string name="latest_version_exists_message">There's a newer app version installed on this device already. Do you want to launch it instead?</string>
+    <string name="latest_version_installed_title">Newer version installed</string>
+    <string name="latest_version_installed_message">There is newer app version installed on this device already. Do you want to launch it instead?</string>
 
     <string name="unsupported_version_installed_title">Unsupported version(s) installed</string>
     <string name="unsupported_version_installed_message">There are unsupported app version(s) installed on this device. Do you want to remove them now?</string>

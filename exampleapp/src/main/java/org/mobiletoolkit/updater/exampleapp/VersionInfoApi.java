@@ -11,7 +11,7 @@ import retrofit2.http.GET;
  */
 public interface VersionInfoApi {
 
-    @GET("/v2/573cb455110000de22aa8b2a")
+    @GET("/v2/5751b366110000a033a684ba")
     Call<VersionInfo> getVersionInfo();
 
 }
