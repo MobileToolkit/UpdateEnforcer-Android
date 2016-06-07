@@ -45,17 +45,37 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void outdatedVersionUpdateStarted() {
-
+                // wait with app launch until it's finished
             }
 
             @Override
             public void outdatedVersionUpdateCancelled() {
-
+                // continue with the app launch
             }
 
             @Override
             public void unsupportedVersionUpdateStarted() {
+                // app launch should be stopped
+            }
 
+            @Override
+            public void uninstallUnsupportedVersionsStarted() {
+                // wait with app launch until it's finished
+            }
+
+            @Override
+            public void uninstallUnsupportedVersionsSkipped() {
+                // continue with the app launch
+            }
+
+            @Override
+            public void uninstallUnsupportedVersionsFinished() {
+                // continue with the app launch
+            }
+
+            @Override
+            public void uninstallUnsupportedVersionsCancelled() {
+                // continue with the app launch
             }
         });
     }

@@ -205,6 +205,9 @@ public class Updater {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
+                                if (null != listener) {
+                                    listener.uninstallUnsupportedVersionsStarted();
+                                }
 
                                 performNextUnsupportedVersionUninstall();
                             }
@@ -212,6 +215,9 @@ public class Updater {
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
+                                if (null != listener) {
+                                    listener.uninstallUnsupportedVersionsCancelled();
+                                }
                             }
                         });
 
@@ -219,6 +225,10 @@ public class Updater {
             }
 
             sharedPreferences.edit().putBoolean("unsupported_versions_uninstall_done", true).apply();
+        } else {
+            if (null != listener) {
+                listener.uninstallUnsupportedVersionsSkipped();
+            }
         }
     }
 
@@ -227,8 +237,12 @@ public class Updater {
             String appId = version.getApplicationId();
             if (null != appId && !appId.equals(appApplicationId) && isApplicationInstalled(appId)) {
                 unistallApplication(appId);
-                break;
+                return;
             }
+        }
+
+        if (null != listener) {
+            listener.uninstallUnsupportedVersionsFinished();
         }
     }
 
@@ -261,6 +275,11 @@ public class Updater {
         void outdatedVersionUpdateCancelled();
 
         void unsupportedVersionUpdateStarted();
+
+        void uninstallUnsupportedVersionsStarted();
+        void uninstallUnsupportedVersionsSkipped();
+        void uninstallUnsupportedVersionsFinished();
+        void uninstallUnsupportedVersionsCancelled();
     }
 
 }
