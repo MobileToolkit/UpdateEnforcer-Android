@@ -26,11 +26,11 @@ public class VersionCheckUnitTest {
                 VersionCheck.Result.UNSUPPORTED,
                 VersionCheck.Result.UNSUPPORTED,
                 VersionCheck.Result.OUTDATED,
+                VersionCheck.Result.OUTDATED,
                 VersionCheck.Result.UNSUPPORTED,
                 VersionCheck.Result.UNSUPPORTED,
                 VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED
+                VersionCheck.Result.OUTDATED
         };
 
         String appId = "org.mobiletoolkit.updater.exampleapp";

@@ -39,15 +39,13 @@ public class VersionCheck {
                     result = Result.OUTDATED;
                 }
             } else {
-                result = Result.UNSUPPORTED;
+                result = Result.OUTDATED;
             }
 
-            if (!result.equals(Result.UNSUPPORTED)) {
-                for (Version version : versionInfo.getUnsupportedVersions()) {
-                    if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
-                        result = Result.UNSUPPORTED;
-                        break;
-                    }
+            for (Version version : versionInfo.getUnsupportedVersions()) {
+                if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
+                    result = Result.UNSUPPORTED;
+                    break;
                 }
             }
         }
