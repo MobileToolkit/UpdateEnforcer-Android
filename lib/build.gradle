@@ -12,7 +12,7 @@ plugins {
     id "com.jfrog.bintray" version "1.6"
 }
 
-group = 'org.mobiletoolkit'
+group = 'org.mobiletoolkit.updater'
 version = '1.0.1'
 
 apply plugin: 'com.android.library'
@@ -49,13 +49,13 @@ dependencies {
 install {
     repositories.mavenInstaller {
         pom.project {
-            name 'updater'
+            name 'lib'
             url 'https://github.com/MobileToolkit/updater-android'
             inceptionYear '2016'
 
             packaging 'aar'
-            groupId 'org.mobiletoolkit'
-            artifactId 'updater'
+            groupId 'org.mobiletoolkit.updater'
+            artifactId 'lib'
             version '1.0.1'
         }
     }
