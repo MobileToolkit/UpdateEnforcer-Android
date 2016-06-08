@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mobiletoolkit.updater.model.VersionInfo;
 
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -16,39 +17,26 @@ import static org.junit.Assert.assertEquals;
 public class VersionCheckUnitTest {
     @Test
     public void getResult() {
-        VersionInfo versionInfo = new Gson().fromJson(new InputStreamReader(getClass().getResourceAsStream("version_info.json")), VersionInfo.class);
+        final VersionInfo versionInfo = new Gson().fromJson(new InputStreamReader(getClass().getResourceAsStream("version_info.json")), VersionInfo.class);
 
-        VersionCheck.Result[] expecteds, actuals;
+        HashMap<VersionCheck.Result, VersionCheck.Result> versionCheckResults = new HashMap<VersionCheck.Result, VersionCheck.Result>() {{
+            put(VersionCheck.Result.UP_TO_DATE,  new VersionCheck("2.0",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.2",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.3",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.4.5", "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.9",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("1.5",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
+            put(VersionCheck.Result.OUTDATED,    new VersionCheck("1.6",   "org.mobiletoolkit.updater.exampleapp",    versionInfo).getResult());
 
-        expecteds = new VersionCheck.Result[] {
-                VersionCheck.Result.UP_TO_DATE,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.OUTDATED,
-                VersionCheck.Result.OUTDATED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.UNSUPPORTED,
-                VersionCheck.Result.OUTDATED
-        };
+            put(VersionCheck.Result.OUTDATED,    new VersionCheck("2.0",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.2",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.3",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.UNSUPPORTED, new VersionCheck("0.4.5", "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.OUTDATED,    new VersionCheck("0.9",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.OUTDATED,    new VersionCheck("1.5",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+            put(VersionCheck.Result.OUTDATED,    new VersionCheck("1.6",   "org.mobiletoolkit.updater.exampleapp.old", versionInfo).getResult());
+        }};
 
-        String appId = "org.mobiletoolkit.updater.exampleapp";
-        String oldAppId = "org.mobiletoolkit.updater.exampleapp.old";
-
-        actuals = new VersionCheck.Result[] {
-                new VersionCheck("2.0",   appId,    versionInfo).getResult(),
-                new VersionCheck("0.2",   appId,    versionInfo).getResult(),
-                new VersionCheck("0.4.5", appId,    versionInfo).getResult(),
-                new VersionCheck("0.9",   appId,    versionInfo).getResult(),
-                new VersionCheck("1.6",   appId,    versionInfo).getResult(),
-                new VersionCheck("2.0",   oldAppId, versionInfo).getResult(),
-                new VersionCheck("0.2",   oldAppId, versionInfo).getResult(),
-                new VersionCheck("0.4.5", oldAppId, versionInfo).getResult(),
-                new VersionCheck("0.9",   oldAppId, versionInfo).getResult(),
-                new VersionCheck("1.6",   oldAppId, versionInfo).getResult()
-        };
-
-        assertArrayEquals(expecteds, actuals);
+        assertArrayEquals(versionCheckResults.keySet().toArray(), versionCheckResults.values().toArray());
     }
 }

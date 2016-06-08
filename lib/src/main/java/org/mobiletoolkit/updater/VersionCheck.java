@@ -31,21 +31,25 @@ public class VersionCheck {
 
     public Result getResult() {
         if (null == result) {
-            result = Result.UP_TO_DATE;
+            result = Result.OUTDATED;
 
             if (appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
-                DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName());
-                if (0 != appVersion.compareTo(latestVersion)) {
+                if (0 != appVersion.compareTo(new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName()))) {
                     result = Result.OUTDATED;
+                } else {
+                    result = Result.UP_TO_DATE;
                 }
-            } else {
-                result = Result.OUTDATED;
             }
 
-            for (Version version : versionInfo.getUnsupportedVersions()) {
-                if (0 < new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
-                    result = Result.UNSUPPORTED;
-                    break;
+            if (!Result.UP_TO_DATE.equals(result)) {
+                for (Version version : versionInfo.getUnsupportedVersions()) {
+                    if (appApplicationId.equals(version.getApplicationId())) {
+                        int r = new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion);
+                        if (0 <= new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
+                            result = Result.UNSUPPORTED;
+                            break;
+                        }
+                    }
                 }
             }
         }
