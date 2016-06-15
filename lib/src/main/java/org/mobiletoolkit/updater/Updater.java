@@ -223,6 +223,10 @@ public class Updater {
                         });
 
                 builder.create().show();
+            } else {
+                if (null != listener) {
+                    listener.uninstallUnsupportedVersionsSkipped();
+                }
             }
 
             sharedPreferences.edit().putBoolean("unsupported_versions_uninstall_done", true).apply();

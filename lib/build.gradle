@@ -13,7 +13,7 @@ plugins {
 }
 
 group = 'org.mobiletoolkit.updater'
-version = '1.0.4'
+version = '1.0.5'
 
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
@@ -26,7 +26,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 3
-        versionName '1.0.4'
+        versionName '1.0.5'
     }
     buildTypes {
         release {
@@ -56,7 +56,7 @@ install {
             packaging 'aar'
             groupId 'org.mobiletoolkit.updater'
             artifactId 'lib'
-            version '1.0.4'
+            version '1.0.5'
         }
     }
 }
@@ -72,9 +72,9 @@ bintray {
         userOrg = 'mobiletoolkit'
 
         version {
-            name = '1.0.4'
+            name = '1.0.5'
             released  = new Date()
-            vcsTag = '1.0.4'
+            vcsTag = '1.0.5'
             gpg {
                 sign = true
                 passphrase = BINTRAY_GPG_PASSWORD
