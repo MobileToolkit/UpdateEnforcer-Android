@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -51,7 +52,7 @@ public class Updater {
         versionCheck = new VersionCheck(appVersionName, appApplicationId, versionInfo);
 
         // check if the latest app version is already installed & propose to start it instead
-        if (isApplicationInstalled(versionInfo.getLatestVersion().getApplicationId()) && !appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
+        if (isApplicationVersionInstalled(versionInfo.getLatestVersion().getApplicationId(), versionInfo.getLatestVersion().getVersionName()) && !appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                     .setTitle(R.string.latest_version_installed_title)
                     .setMessage(R.string.latest_version_installed_message)
@@ -192,7 +193,7 @@ public class Updater {
 
             Boolean unsupportedVersionsInstalled = false;
             for (Version version : versionInfo.getUnsupportedVersions()) {
-                if (!appApplicationId.equals(version.getApplicationId()) && isApplicationInstalled(version.getApplicationId())) {
+                if (!appApplicationId.equals(version.getApplicationId()) && isApplicationVersionInstalled(version.getApplicationId(), version.getVersionName())) {
                     unsupportedVersionsInstalled = true;
                     break;
                 }
@@ -235,7 +236,7 @@ public class Updater {
     private void performNextUnsupportedVersionUninstall() {
         for (Version version : versionInfo.getUnsupportedVersions()) {
             String appId = version.getApplicationId();
-            if (null != appId && !appId.equals(appApplicationId) && isApplicationInstalled(appId)) {
+            if (null != appId && !appId.equals(appApplicationId) && isApplicationVersionInstalled(appId, version.getVersionName())) {
                 unistallApplication(appId);
                 return;
             }
@@ -247,14 +248,14 @@ public class Updater {
     }
 
     @NonNull
-    private Boolean isApplicationInstalled(@NonNull String applicationId) {
+    private Boolean isApplicationVersionInstalled(@NonNull String applicationId, @NonNull String versionName) {
         try {
-            activity.getPackageManager().getPackageInfo(applicationId, PackageManager.GET_META_DATA);
+            PackageInfo packageInfo = activity.getPackageManager().getPackageInfo(applicationId, PackageManager.GET_META_DATA);
+
+            return versionName.equals(packageInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-
-        return true;
     }
 
     private void launchApplication(@NonNull String applicationId) {
