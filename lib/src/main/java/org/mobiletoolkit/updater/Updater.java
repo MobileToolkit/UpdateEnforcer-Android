@@ -1,6 +1,7 @@
 package org.mobiletoolkit.updater;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -178,11 +179,17 @@ public class Updater {
     }
 
     private void showLatestVersionInGooglePlay() {
+        final String applicationId = versionInfo.getLatestVersion().getApplicationId();
+
         Intent intent = new Intent(Intent.ACTION_VIEW) {{
-            setData(Uri.parse(String.format("market://details?id=%s", versionInfo.getLatestVersion().getApplicationId())));
+            setData(Uri.parse(String.format("market://details?id=%s", applicationId)));
         }};
 
-        activity.startActivity(intent);
+        try {
+            activity.startActivity(intent);
+        } catch (ActivityNotFoundException exception) {
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://play.google.com/store/apps/details?id=%s", applicationId))));
+        }
     }
 
     private void uninstallUnsupportedVersionsIfNeeded() {
@@ -241,7 +248,7 @@ public class Updater {
         for (Version version : versionInfo.getUnsupportedVersions()) {
             String appId = version.getApplicationId();
             if (null != appId && !appId.equals(appApplicationId) && isApplicationVersionInstalled(appId, version.getVersionName())) {
-                unistallApplication(appId);
+                uninstallApplication(appId);
                 return;
             }
         }
@@ -266,7 +273,7 @@ public class Updater {
         activity.startActivity(activity.getPackageManager().getLaunchIntentForPackage(applicationId));
     }
 
-    private void unistallApplication(String applicationId) {
+    private void uninstallApplication(String applicationId) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + applicationId));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
