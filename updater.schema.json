@@ -3,17 +3,20 @@
 
   "definitions": {
     "update_prompt": {
-      "title": {
-        "anyOf": [
+      "type": "object",
+      "properties": {
+        "title": {
+          "anyOf": [
             { "type": "string" },
             { "type": "null" }
-        ]
-      },
-      "message": {
-        "anyOf": [
+          ]
+        },
+        "message": {
+          "anyOf": [
             { "type": "string" },
             { "type": "null" }
-        ]
+          ]
+        }
       }
     },
 

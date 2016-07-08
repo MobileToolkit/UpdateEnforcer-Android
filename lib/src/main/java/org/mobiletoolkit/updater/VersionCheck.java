@@ -29,6 +29,7 @@ public class VersionCheck {
         this.versionInfo = versionInfo;
     }
 
+    @NonNull
     public Result getResult() {
         if (null == result) {
             result = Result.OUTDATED;
