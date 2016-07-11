@@ -35,7 +35,7 @@ public class VersionCheck {
             result = Result.OUTDATED;
 
             if (appApplicationId.equals(versionInfo.getLatestVersion().getApplicationId())) {
-                if (0 != appVersion.compareTo(new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName()))) {
+                if (0 > appVersion.compareTo(new DefaultArtifactVersion(versionInfo.getLatestVersion().getVersionName()))) {
                     result = Result.OUTDATED;
                 } else {
                     result = Result.UP_TO_DATE;
@@ -44,12 +44,10 @@ public class VersionCheck {
 
             if (!Result.UP_TO_DATE.equals(result)) {
                 for (Version version : versionInfo.getUnsupportedVersions()) {
-                    if (appApplicationId.equals(version.getApplicationId())) {
-                        int r = new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion);
-                        if (0 <= new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
-                            result = Result.UNSUPPORTED;
-                            break;
-                        }
+                    if (appApplicationId.equals(version.getApplicationId()) && 0 <= new DefaultArtifactVersion(version.getVersionName()).compareTo(appVersion)) {
+                        result = Result.UNSUPPORTED;
+
+                        break;
                     }
                 }
             }
