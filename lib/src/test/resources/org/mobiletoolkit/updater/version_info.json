@@ -19,11 +19,11 @@
   ],
   "uninstall_unsupported_versions": true,
   "unsupported_version_update_prompt": {
-    "title": "UNSUPPORTED VERSION UPDATE TITLE",
-    "message": "UNSUPPORTED VERSION UPDATE MSG"
+    "title": "Unsupported app version",
+    "message": "This app version is not supported anymore. Please update."
   },
   "outdated_version_update_prompt": {
-    "title": "OUTDATED VERSION UPDATE TITLE",
-    "message": "OUTDATED VERSION UPDATE MSG"
+    "title": "Outdated app version",
+    "message": "Your app is outdated. Consider updating to access the latest features & bugfixes."
   }
 }

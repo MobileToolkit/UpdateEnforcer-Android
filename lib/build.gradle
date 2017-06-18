@@ -4,29 +4,27 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
 plugins {
-    id 'com.jfrog.bintray' version '1.6'
+    id 'com.jfrog.bintray' version '1.7.3'
 }
 
-group = 'org.mobiletoolkit.updater'
-version = '1.0.7'
-
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 4
-        versionName '1.0.7'
+        targetSdkVersion 25
+        versionCode 5
+        versionName '2.0.0'
     }
     buildTypes {
         release {
@@ -39,14 +37,27 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    compile 'org.apache.maven:maven-artifact:3.5.0'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    compile 'com.google.code.gson:gson:2.8.1'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
     testCompile 'junit:junit:4.12'
-
-    compile 'com.android.support:appcompat-v7:24.0.0'
-
-    compile 'org.apache.maven:maven-artifact:3.3.9'
-
-    compile 'com.google.code.gson:gson:2.6.2'
 }
+
+configurations {
+    compile.exclude group: 'com.intellij', module: 'annotations'
+}
+
+group = 'org.mobiletoolkit.updater'
+version = android.defaultConfig.versionName
 
 install {
     repositories.mavenInstaller {
@@ -58,7 +69,7 @@ install {
             packaging 'aar'
             groupId 'org.mobiletoolkit.updater'
             artifactId 'lib'
-            version '1.0.7'
+            version android.defaultConfig.versionName
         }
     }
 }
@@ -72,11 +83,13 @@ bintray {
         repo = 'public'
         name = 'updater'
         userOrg = 'mobiletoolkit'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/MobileToolkit/updater-android.git'
 
         version {
-            name = '1.0.7'
+            name = android.defaultConfig.versionName
             released  = new Date()
-            vcsTag = '1.0.7'
+            vcsTag = android.defaultConfig.versionName
             gpg {
                 sign = true
                 passphrase = BINTRAY_GPG_PASSWORD
