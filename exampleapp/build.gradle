@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId 'org.mobiletoolkit.updater.exampleapp'
@@ -23,17 +23,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'version'
+
     productFlavors {
         latest {
+            dimension 'version'
+
             versionName '2.0.0'
         }
         outdated {
+            dimension 'version'
+
             versionName '1.8'
         }
         unsupported {
+            dimension 'version'
+
             versionName '1.4'
         }
         unsupportedOld {
+            dimension 'version'
+
             applicationIdSuffix '.old'
             versionName '0.4'
         }
@@ -46,7 +56,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -55,7 +65,7 @@ dependencies {
 
     compile project(':lib')
 
-    kapt 'com.android.databinding:compiler:2.3.2'
+    kapt 'com.android.databinding:compiler:3.0.0'
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
