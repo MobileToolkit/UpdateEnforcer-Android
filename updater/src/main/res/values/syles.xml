@@ -1,0 +1,5 @@
+<resources>
+
+    <style name="MobileToolkit.Updater.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert" />
+
+</resources>

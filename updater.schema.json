@@ -24,16 +24,15 @@
       "type": "object",
       "properties": {
         "application_id": { "type": "string" },
-        "version_name": { "type": "string" }
+        "version_name": { "type": "string" },
+        "install_url": { "type": "string" }
       }
     }
   },
 
   "type": "object",
   "properties": {
-    "latest_version": { "$ref": "#/definitions/version" }
-  },
-  "additionalProperties": {
+    "latest_version": { "$ref": "#/definitions/version" },
     "unsupported_versions": {
       "type": "array",
       "items": [
@@ -47,5 +46,8 @@
     "uninstall_unsupported_versions": { "type": "boolean" },
     "unsupported_version_update_prompt": { "$ref": "#/definitions/update_prompt" },
     "outdated_version_update_prompt": { "$ref": "#/definitions/update_prompt" }
-  }
+  },
+  "required": [
+    "latest_version"
+  ]
 }

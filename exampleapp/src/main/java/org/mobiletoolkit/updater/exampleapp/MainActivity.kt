@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var versionInfoService: VersionInfoApi
 
-    private val updater = Updater(this, BuildConfig.VERSION_NAME, BuildConfig.APPLICATION_ID, callback = object : SimpleCallback() {
+    private val updaterCallback = object : SimpleCallback() {
         override fun onLatestVersionLaunchCancelled(versionCheckResult: VersionCheck.Result) {
             if (VersionCheck.Result.UNSUPPORTED == versionCheckResult) {
                 Toast.makeText(this@MainActivity, "UNSUPPORTED app version, launch should be stopped", Toast.LENGTH_LONG).show()
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        override fun onVersionUpdateStarted(versionCheckResult: VersionCheck.Result) {
-//            // should wait with app launch until update is finished
+//            // should wait with app launch until mobiletoolkit_updater_update_button is finished
 //        }
 //
 //        override fun onVersionUpdateCancelled(versionCheckResult: VersionCheck.Result) {
@@ -66,7 +66,9 @@ class MainActivity : AppCompatActivity() {
 //        override fun onUninstallUnsupportedVersionCancelled(applicationId: String) {
 //            // continue with the app launch
 //        }
-    })
+    }
+
+    private val updater = Updater(this, BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME, callback = updaterCallback)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,5 +1,0 @@
-<resources>
-
-    <style name="UpdaterAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert" />
-
-</resources>

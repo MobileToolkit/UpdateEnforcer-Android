@@ -5,27 +5,28 @@ import org.mobiletoolkit.updater.model.VersionsInfo
 
 /**
  * Created by Sebastian Owodzin on 15/05/2016.
- * Copyright © 2017 mobiletoolkit.org. All rights reserved.
+ * Copyright © 2016 mobiletoolkit.org. All rights reserved.
  */
-public class VersionCheck(
+class VersionCheck(
         private val applicationId: String,
         private val versionName: String,
         val versionsInfo: VersionsInfo
 ) {
-    public enum class Result {
+    enum class Result {
         UP_TO_DATE, OUTDATED, UNSUPPORTED
     }
-    public val result: Result
+
+    val result: Result
         get() {
             var resultValue = Result.OUTDATED
 
-            val appVersion: DefaultArtifactVersion = DefaultArtifactVersion(versionName)
+            val appVersion = DefaultArtifactVersion(versionName)
 
             if (applicationId == versionsInfo.latestVersionData.applicationId) {
-                if (appVersion < DefaultArtifactVersion(versionsInfo.latestVersionData.versionName)) {
-                    resultValue = Result.OUTDATED
+                resultValue = if (appVersion < DefaultArtifactVersion(versionsInfo.latestVersionData.versionName)) {
+                    Result.OUTDATED
                 } else {
-                    resultValue = Result.UP_TO_DATE
+                    Result.UP_TO_DATE
                 }
             }
 

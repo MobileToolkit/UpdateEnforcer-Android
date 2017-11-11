@@ -25,11 +25,11 @@ To use the library, first include it your project using Gradle
     }
 
 	dependencies {
-	    compile 'org.mobiletoolkit.updater:lib:2.0.0'
+	    compile 'org.mobiletoolkit.updater:updater:2.0.0'
 	}
 
 
 
 ## How to use
 
-Checkout the *exampleapp* module for sample implementations.
+Check the *exampleapp* module for sample implementation.

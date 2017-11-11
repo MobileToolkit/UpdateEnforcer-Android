@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion build_tools_version
 
     defaultConfig {
         applicationId 'org.mobiletoolkit.updater.exampleapp'
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName '2.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,22 +30,28 @@ android {
             dimension 'version'
 
             versionName '2.0.0'
+
+            resValue "string", "app_name", "Updater Test (2.0.0)"
         }
         outdated {
             dimension 'version'
 
             versionName '1.8'
+
+            resValue "string", "app_name", "Updater Test (1.8)"
         }
         unsupported {
             dimension 'version'
 
             versionName '1.4'
+            resValue "string", "app_name", "Updater Test (1.4)"
         }
         unsupportedOld {
             dimension 'version'
 
             applicationIdSuffix '.old'
             versionName '0.4'
+            resValue "string", "app_name", "Updater Test (0.4 | .old)"
         }
     }
     packagingOptions {
@@ -54,26 +60,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    compile 'com.android.support:appcompat-v7:25.4.0'
-
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-
-    compile project(':lib')
+    implementation project(':updater')
 
     kapt 'com.android.databinding:compiler:3.0.0'
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    testCompile 'junit:junit:4.12'
-}
-
-kapt {
-    generateStubs = true
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }

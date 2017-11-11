@@ -2,8 +2,9 @@ package org.mobiletoolkit.updater
 
 /**
  * Created by Sebastian Owodzin on 17/06/2017.
+ * Copyright © 2017 mobiletoolkit.org. All rights reserved.
  */
-public abstract class SimpleCallback : Callback {
+abstract class SimpleCallback : Callback {
     override fun onLatestVersionLaunchCancelled(versionCheckResult: VersionCheck.Result) {}
 
     override fun onVersionUpdateStarted(versionCheckResult: VersionCheck.Result) {}
