@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Copyright © 2016 mobiletoolkit.org. All rights reserved.
  */
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var versionInfoService: VersionInfoApi
@@ -89,14 +90,14 @@ class MainActivity : AppCompatActivity() {
 
         versionInfoService.versionsInfo.enqueue(object : Callback<VersionsInfo> {
             override fun onFailure(call: Call<VersionsInfo>?, t: Throwable?) {
-                Log.i("VersionInfoApi", "Callback::onFailure error: $t")
+                Log.v("VersionInfoApi", "Callback::onFailure error: $t")
 
                 // VersionsInfo fetch was unsuccessful, do nothing
             }
 
             override fun onResponse(call: Call<VersionsInfo>?, response: Response<VersionsInfo>?) {
-                Log.i("VersionInfoApi", "Callback::onResponse response: $response")
-                Log.i("VersionInfoApi", "Callback::onResponse body: ${response?.body()}")
+                Log.v("VersionInfoApi", "Callback::onResponse response: $response")
+                Log.v("VersionInfoApi", "Callback::onResponse body: ${response?.body()}")
 
                 if (response?.body() != null) {
                     updater.execute(response.body() as VersionsInfo)

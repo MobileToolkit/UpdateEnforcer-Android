@@ -1,1 +1,1 @@
-include ':updater', ':exampleapp'
+include ':updater', ':exampleapp', ':exampleapp-java'

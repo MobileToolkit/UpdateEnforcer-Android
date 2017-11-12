@@ -1,12 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId 'org.mobiletoolkit.updater.exampleapp'
+        applicationId "org.mobiletoolkit.updater.exampleapp"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
@@ -56,10 +54,6 @@ android {
             resValue "string", "app_name", "Updater Test (0.4 | .old)"
         }
     }
-
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-    }
 }
 
 dependencies {
@@ -67,14 +61,13 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation project(':updater')
 
-    kapt 'com.android.databinding:compiler:3.0.0'
+    annotationProcessor 'com.android.databinding:compiler:3.0.0'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
 }
