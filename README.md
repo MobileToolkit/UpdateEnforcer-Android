@@ -15,6 +15,11 @@ If your answer is YES, then you are in the right place!
  * Remote users migration between two different application IDs
 
 
+![outdated](screenshots/outdated.png)
+![unsupported](screenshots/unsupported.png)
+![uninstall](screenshots/uninstall.png)
+
+
 ## Installation
 
 To use the library, first include it your project using Gradle
