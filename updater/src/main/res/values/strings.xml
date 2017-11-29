@@ -4,17 +4,21 @@
 
     <string name="mobiletoolkit_updater_unsupported_version_title">Unsupported version</string>
     <string name="mobiletoolkit_updater_unsupported_version_message">This app version is not supported anymore</string>
+    <string name="mobiletoolkit_updater_unsupported_version_update_button">Update</string>
 
     <string name="mobiletoolkit_updater_outdated_version_title">Outdated version</string>
     <string name="mobiletoolkit_updater_outdated_version_message">This app version is outdated, please update</string>
+    <string name="mobiletoolkit_updater_outdated_version_update_button">Update</string>
+    <string name="mobiletoolkit_updater_outdated_version_cancel_button">Cancel</string>
 
-    <string name="mobiletoolkit_updater_latest_version_installed_title">Newer version installed</string>
-    <string name="mobiletoolkit_updater_latest_version_installed_message">There is newer app version installed on this device already. Do you want to launch it instead?</string>
+    <string name="mobiletoolkit_updater_run_latest_version_title">Newer version installed</string>
+    <string name="mobiletoolkit_updater_run_latest_version_message">There is newer app version installed on this device already. Would you like to launch it instead?</string>
+    <string name="mobiletoolkit_updater_run_latest_version_yes_button">Yes</string>
+    <string name="mobiletoolkit_updater_run_latest_version_no_button">No</string>
 
     <string name="mobiletoolkit_updater_unsupported_versions_installed_title">Unsupported version(s) installed</string>
     <string name="mobiletoolkit_updater_unsupported_versions_installed_message">There are unsupported app version(s) installed on this device. Do you want to remove them now?</string>
 
-    <string name="mobiletoolkit_updater_update_button">Update</string>
     <string name="mobiletoolkit_updater_ok_button">OK</string>
     <string name="mobiletoolkit_updater_cancel_button">Cancel</string>
 

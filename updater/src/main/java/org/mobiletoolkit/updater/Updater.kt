@@ -142,14 +142,14 @@ class Updater(
 
     private fun showRunLatestVersionAlertDialog(context: Context) {
         AlertDialog.Builder(context, R.style.MobileToolkit_Updater_Dialog_Alert)
-                .setTitle(R.string.mobiletoolkit_updater_latest_version_installed_title)
-                .setMessage(R.string.mobiletoolkit_updater_latest_version_installed_message)
-                .setPositiveButton(R.string.mobiletoolkit_updater_ok_button) { dialog, _ ->
+                .setTitle(R.string.mobiletoolkit_updater_run_latest_version_title)
+                .setMessage(R.string.mobiletoolkit_updater_run_latest_version_message)
+                .setPositiveButton(R.string.mobiletoolkit_updater_run_latest_version_yes_button) { dialog, _ ->
                     dialog.dismiss()
 
                     launchApplication(context, versionsInfo.latestVersionData.applicationId)
                 }
-                .setNegativeButton(R.string.mobiletoolkit_updater_cancel_button) { dialog, _ ->
+                .setNegativeButton(R.string.mobiletoolkit_updater_run_latest_version_no_button) { dialog, _ ->
                     dialog.dismiss()
 
                     callback?.onLatestVersionLaunchCancelled(versionCheck.result)
@@ -161,14 +161,14 @@ class Updater(
         val builder = AlertDialog.Builder(context, R.style.MobileToolkit_Updater_Dialog_Alert)
                 .setTitle(R.string.mobiletoolkit_updater_outdated_version_title)
                 .setMessage(R.string.mobiletoolkit_updater_outdated_version_message)
-                .setPositiveButton(R.string.mobiletoolkit_updater_update_button) { dialog, _ ->
+                .setPositiveButton(R.string.mobiletoolkit_updater_outdated_version_update_button) { dialog, _ ->
                     dialog.dismiss()
 
                     callback?.onVersionUpdateStarted(versionCheck.result)
 
                     initializeUpdate(context, versionsInfo.latestVersionData)
                 }
-                .setNegativeButton(R.string.mobiletoolkit_updater_cancel_button) { dialog, _ ->
+                .setNegativeButton(R.string.mobiletoolkit_updater_outdated_version_cancel_button) { dialog, _ ->
                     dialog.dismiss()
 
                     callback?.onVersionUpdateCancelled(versionCheck.result)
@@ -186,7 +186,7 @@ class Updater(
         val builder = AlertDialog.Builder(context, R.style.MobileToolkit_Updater_Dialog_Alert)
                 .setTitle(R.string.mobiletoolkit_updater_unsupported_version_title)
                 .setMessage(R.string.mobiletoolkit_updater_unsupported_version_message)
-                .setPositiveButton(R.string.mobiletoolkit_updater_update_button) { dialog, _ ->
+                .setPositiveButton(R.string.mobiletoolkit_updater_unsupported_version_update_button) { dialog, _ ->
                     dialog.dismiss()
 
                     callback?.onVersionUpdateStarted(versionCheck.result)
