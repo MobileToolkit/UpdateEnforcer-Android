@@ -101,13 +101,15 @@ class MainActivity : AppCompatActivity() {
 
                 if (response?.body() != null) {
                     updater.execute(response.body() as VersionsInfo)
+                } else {
+                    // continue with the app launch
                 }
             }
         })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (updater.onActivityResult(requestCode, resultCode, data)) {
+        if (updater.onActivityResult(requestCode, resultCode)) {
             return
         }
 

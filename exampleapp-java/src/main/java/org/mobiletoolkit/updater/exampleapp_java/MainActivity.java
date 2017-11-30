@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.body() != null) {
                     updater.execute(response.body());
+                } else {
+                    // continue with the app launch
                 }
             }
 
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (updater.onActivityResult(requestCode, resultCode, data)) {
+        if (updater.onActivityResult(requestCode, resultCode)) {
             return;
         }
 

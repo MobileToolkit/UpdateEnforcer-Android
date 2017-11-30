@@ -10,7 +10,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName '2.0.0'
+        versionName '3.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -28,32 +28,39 @@ android {
     flavorDimensions 'version'
 
     productFlavors {
+        latestBugfix {
+            dimension 'version'
+
+            versionName '2.0.1'
+
+            resValue "string", "app_name", "Updater (2.0.1)"
+        }
         latest {
             dimension 'version'
 
             versionName '2.0.0'
 
-            resValue "string", "app_name", "Updater Test (2.0.0)"
+            resValue "string", "app_name", "Updater (2.0.0)"
         }
         outdated {
             dimension 'version'
 
             versionName '1.8'
 
-            resValue "string", "app_name", "Updater Test (1.8)"
+            resValue "string", "app_name", "Updater (1.8)"
         }
         unsupported {
             dimension 'version'
 
             versionName '1.4'
-            resValue "string", "app_name", "Updater Test (1.4)"
+            resValue "string", "app_name", "Updater (1.4)"
         }
         unsupportedOld {
             dimension 'version'
 
             applicationIdSuffix '.old'
             versionName '0.4'
-            resValue "string", "app_name", "Updater Test (0.4 | .old)"
+            resValue "string", "app_name", "Updater (0.4 | .old)"
         }
     }
 

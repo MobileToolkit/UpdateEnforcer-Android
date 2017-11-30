@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion
 import org.mobiletoolkit.updater.model.UpdatePromptData
 import org.mobiletoolkit.updater.model.VersionData
 import org.mobiletoolkit.updater.model.VersionsInfo
@@ -35,19 +34,20 @@ class Updater(
     }
 
     private lateinit var versionsInfo: VersionsInfo
-    private lateinit var versionCheck: VersionCheck
+    private lateinit var versionCheckResult: VersionCheck.Result
 
     fun execute(versionsInfo: VersionsInfo) {
         this.versionsInfo = versionsInfo
-        versionCheck = VersionCheck(applicationId, versionName, versionsInfo)
+        versionCheckResult = VersionCheck(applicationId, versionName, versionsInfo).result
 
         // check if the latest app version is already installed & if it's not the current one then propose to start it instead
-        if (isApplicationInstalled(activity, versionsInfo.latestVersionData) && !isApplicationRunning(versionsInfo.latestVersionData)) {
+        Log.v(TAG, "is applicationId running: ${versionsInfo.latestVersionData.applicationId == applicationId}")
+        if (isPackageInstalled(activity, versionsInfo.latestVersionData) && versionsInfo.latestVersionData.applicationId != applicationId) {
             if (promptToRunLatestVersion) {
                 showRunLatestVersionAlertDialog(activity)
             }
         } else {
-            when (versionCheck.result) {
+            when (versionCheckResult) {
                 VersionCheck.Result.UP_TO_DATE -> uninstallUnsupportedVersionsIfNeeded(activity)
                 VersionCheck.Result.OUTDATED -> showOutdatedVersionAlertDialog(activity)
                 VersionCheck.Result.UNSUPPORTED -> showUnsupportedVersionAlertDialog(activity)
@@ -55,7 +55,7 @@ class Updater(
         }
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean =
+    fun onActivityResult(requestCode: Int, resultCode: Int): Boolean =
             if (requestCode == UNSUPPORTED_VERSION_UNINSTALL_REQUEST_CODE) {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
@@ -94,27 +94,6 @@ class Updater(
                 false
             }
 
-    private fun isApplicationInstalled(context: Context, versionData: VersionData): Boolean {
-        val result = isPackageInstalled(context, versionData)
-                && DefaultArtifactVersion(versionData.versionName) == DefaultArtifactVersion(versionName)
-
-        Log.v(TAG, "isApplicationInstalled: $result\n" +
-                " * versionData: $versionData")
-
-        return result
-    }
-
-    private fun isApplicationRunning(versionData: VersionData): Boolean {
-        val result = versionData.applicationId == applicationId
-                && DefaultArtifactVersion(versionData.versionName) == DefaultArtifactVersion(versionName)
-
-        Log.v(TAG, "isApplicationRunning: $result\n" +
-                " * versionData: $versionData\n" +
-                " * applicationId: $applicationId | versionName: $versionName")
-
-        return result
-    }
-
     private fun launchApplication(context: Context, applicationId: String) {
         context.startActivity(context.packageManager.getLaunchIntentForPackage(applicationId))
     }
@@ -152,7 +131,7 @@ class Updater(
                 .setNegativeButton(R.string.mobiletoolkit_updater_run_latest_version_no_button) { dialog, _ ->
                     dialog.dismiss()
 
-                    callback?.onLatestVersionLaunchCancelled(versionCheck.result)
+                    callback?.onLatestVersionLaunchCancelled(versionCheckResult)
                 }
                 .show()
     }
@@ -164,14 +143,14 @@ class Updater(
                 .setPositiveButton(R.string.mobiletoolkit_updater_outdated_version_update_button) { dialog, _ ->
                     dialog.dismiss()
 
-                    callback?.onVersionUpdateStarted(versionCheck.result)
+                    callback?.onVersionUpdateStarted(versionCheckResult)
 
                     initializeUpdate(context, versionsInfo.latestVersionData)
                 }
                 .setNegativeButton(R.string.mobiletoolkit_updater_outdated_version_cancel_button) { dialog, _ ->
                     dialog.dismiss()
 
-                    callback?.onVersionUpdateCancelled(versionCheck.result)
+                    callback?.onVersionUpdateCancelled(versionCheckResult)
                 }
 
         if (null != versionsInfo.outdatedVersionUpdatePromptData) {
@@ -189,7 +168,7 @@ class Updater(
                 .setPositiveButton(R.string.mobiletoolkit_updater_unsupported_version_update_button) { dialog, _ ->
                     dialog.dismiss()
 
-                    callback?.onVersionUpdateStarted(versionCheck.result)
+                    callback?.onVersionUpdateStarted(versionCheckResult)
 
                     initializeUpdate(context, versionsInfo.latestVersionData)
                 }
@@ -205,8 +184,8 @@ class Updater(
     private fun isNotMarkedUninstallUnsupportedVersionsDone(context: Context): Boolean =
             context.getSharedPreferences(
                     SHARED_PREFERENCES_FILE_NAME,
-                    Context.MODE_PRIVATE).getBoolean(SHARED_PREFERENCES_KEY, false
-            ).not()
+                    Context.MODE_PRIVATE
+            ).getBoolean(SHARED_PREFERENCES_KEY, false).not()
 
     private fun shouldUninstallUnsupportedVersions(context: Context): Boolean {
         Log.v(TAG, "shouldUninstallUnsupportedVersions\n" +
@@ -262,6 +241,8 @@ class Updater(
                 }
                 .setNegativeButton(R.string.mobiletoolkit_updater_cancel_button) { dialog, _ ->
                     dialog.dismiss()
+
+                    markUninstallUnsupportedVersionsDone(activity)
 
                     callback?.onUninstallUnsupportedVersionCancelled(applicationId)
                 }
