@@ -29,7 +29,7 @@ class Updater(
 
         private val UNSUPPORTED_VERSION_UNINSTALL_REQUEST_CODE = 999
 
-        private val SHARED_PREFERENCES_FILE_NAME = "com.mobiletoolkit.updater"
+        private val SHARED_PREFERENCES_FILE_NAME_PREFIX = "com.mobiletoolkit.updater"
         private val SHARED_PREFERENCES_KEY = "unsupported_versions_uninstall_done"
     }
 
@@ -183,7 +183,7 @@ class Updater(
 
     private fun isNotMarkedUninstallUnsupportedVersionsDone(context: Context): Boolean =
             context.getSharedPreferences(
-                    SHARED_PREFERENCES_FILE_NAME,
+                    "${SHARED_PREFERENCES_FILE_NAME_PREFIX}_$applicationId",
                     Context.MODE_PRIVATE
             ).getBoolean(SHARED_PREFERENCES_KEY, false).not()
 
@@ -198,7 +198,7 @@ class Updater(
 
     private fun markUninstallUnsupportedVersionsDone(context: Context) {
         context.getSharedPreferences(
-                SHARED_PREFERENCES_FILE_NAME,
+                "${SHARED_PREFERENCES_FILE_NAME_PREFIX}_$applicationId",
                 Context.MODE_PRIVATE
         ).edit().putBoolean(SHARED_PREFERENCES_KEY, true).apply()
     }
