@@ -30,7 +30,9 @@ To use the library, first include it your project using Gradle
     }
 
 	dependencies {
-	    implementation 'org.mobiletoolkit.updater:updater:2.0.0'
+	    implementation 'org.mobiletoolkit.updater:updater:2.1.0'
+	    
+	    implementation 'org.apache.maven:maven-artifact:3.5.2'
 	}
 
 
